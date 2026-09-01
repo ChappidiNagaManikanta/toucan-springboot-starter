@@ -126,6 +126,7 @@ public class TransactionServiceImpl implements TransactionService {
         if (currentStatus == TransactionStatus.PENDING) {
             // PENDING can transition to any valid subsequent state
             return newStatus == TransactionStatus.APPROVED
+                    || newStatus == TransactionStatus.PROCESSING
                     || newStatus == TransactionStatus.COMPLETED
                     || newStatus == TransactionStatus.SUCCESS
                     || newStatus == TransactionStatus.FAILED
@@ -133,6 +134,12 @@ public class TransactionServiceImpl implements TransactionService {
                     || newStatus == TransactionStatus.CANCELLED;
         } else if (currentStatus == TransactionStatus.APPROVED) {
             // APPROVED can transition to COMPLETED, SUCCESS, FAILED, or CANCELLED
+            return newStatus == TransactionStatus.COMPLETED
+                    || newStatus == TransactionStatus.SUCCESS
+                    || newStatus == TransactionStatus.FAILED
+                    || newStatus == TransactionStatus.CANCELLED;
+        } else if (currentStatus == TransactionStatus.PROCESSING) {
+            // PROCESSING can transition to COMPLETED, SUCCESS, FAILED, or CANCELLED
             return newStatus == TransactionStatus.COMPLETED
                     || newStatus == TransactionStatus.SUCCESS
                     || newStatus == TransactionStatus.FAILED

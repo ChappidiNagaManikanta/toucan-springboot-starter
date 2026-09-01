@@ -8,15 +8,18 @@ public enum TransactionStatus {
     COMPLETED,
     APPROVED,
     SUCCESS,
+    PROCESSING,
     FAILED,
     REJECTED,
     CANCELLED;
 
     @JsonCreator
     public static TransactionStatus fromString(String value) {
+    	
         if (value == null || value.trim().isEmpty()) {
             return null;
         }
+        
         String normalized = value.trim().toUpperCase();
         for (TransactionStatus status : TransactionStatus.values()) {
             if (status.name().equals(normalized)) {
@@ -29,6 +32,6 @@ public enum TransactionStatus {
         if ("DECLINED".equals(normalized)) {
             return FAILED;
         }
-        throw new IllegalArgumentException("Invalid status: '" + value + "'. Accepted values: [PENDING, COMPLETED, APPROVED, SUCCESS, FAILED, REJECTED, CANCELLED]");
+        throw new IllegalArgumentException("Invalid status: '" + value + "'. Accepted values: [PENDING, COMPLETED, APPROVED, SUCCESS, PROCESSING, FAILED, REJECTED, CANCELLED]");
     }
 }

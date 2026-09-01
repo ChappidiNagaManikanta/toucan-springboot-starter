@@ -1,5 +1,4 @@
 package com.example.transactionstarter.model;
-
 import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;

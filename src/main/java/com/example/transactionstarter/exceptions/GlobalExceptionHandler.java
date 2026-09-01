@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -50,6 +51,26 @@ public class GlobalExceptionHandler {
         Map<String, String> response = new HashMap<>();
 
         response.put("error", "Invalid transaction data");
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(response);
+    }
+
+
+    // Malformed JSON / Enum parsing errors
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleHttpMessageNotReadable(
+            HttpMessageNotReadableException exception) {
+
+        Map<String, String> response = new HashMap<>();
+
+        Throwable cause = exception.getMostSpecificCause();
+        String message = (cause != null && cause.getMessage() != null)
+                ? cause.getMessage()
+                : "Invalid JSON request payload";
+
+        response.put("error", message);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)

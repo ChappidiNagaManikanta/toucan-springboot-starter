@@ -10,7 +10,7 @@ public enum Currency {
     EUR,
     CAD,
     AUD;
-
+	
     @JsonCreator
     public static Currency fromString(String value) {
         if (value == null || value.trim().isEmpty()) {

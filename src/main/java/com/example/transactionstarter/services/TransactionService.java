@@ -17,4 +17,5 @@ public interface TransactionService {
             TransactionStatus status);
 
     List<Transaction> getTransactionsByCustomerId(String customerId);
+    
 }
